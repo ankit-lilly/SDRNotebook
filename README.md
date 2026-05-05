@@ -212,6 +212,7 @@ ui.table(studies);
 
 ## Example notebooks
 
+```sh
 ┌─────────────────────────────────┬────────────────────────────────────────────────────────────────┐
 │            Notebook             │                         What it covers                         │
 ├─────────────────────────────────┼────────────────────────────────────────────────────────────────┤
@@ -221,6 +222,7 @@ ui.table(studies);
 │ `examples/explore-study.ipynb`  │  Deep-dive into a specific study's versions, designs, and      │
 │                                 │ neighborhood                                                   │
 └─────────────────────────────────┴────────────────────────────────────────────────────────────────┘
+```
 
 Start with **quickstart** — it teaches you Gremlin and Cypher from scratch with runnable examples.
 
