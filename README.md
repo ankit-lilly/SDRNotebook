@@ -14,6 +14,19 @@ Jupyter notebook but in Typescript using Deno Jupyter notebook kernel.
 - Edit a query and re-run just that cell — no restarting anything
 - Build up an analysis step by step, keeping intermediate results
 
+
+## How to use this:
+
+Install [Deno](https://deno.com) and the VS Code Jupyter extension, then open any `.ipynb` file in this folder.
+
+
+You also need to run `deno jupyter --install` once to register the Deno kernel with Jupyter.  After that, you can 
+open notebooks and select the Deno kernel to run TypeScript code directly in cells.
+
+Note that this assumes that you already have AWS CLI configured with an SSO profile named `dsoadev` that has access to
+the SDR Neptune cluster.  If not, you can change the profile name in the connection code cell or set up your AWS CLI
+accordingly.
+
 ## What is Deno? (for Node devs)
 
 [Deno](https://deno.com) is a TypeScript/JavaScript runtime — like Node, but with some key differences:
