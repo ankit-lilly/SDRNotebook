@@ -3,9 +3,6 @@
 Interactive query and visualization environment for the SDR Neptune graph database.  Run Gremlin and
 Cypher queries, render graph diagrams and charts — all from a notebook in VS Code.
 
-**This is TypeScript, not Python.** Despite the `.ipynb` extension and the word "Jupyter," there is zero Python involved.  
-You write regular TypeScript — the same language as the rest of this repo - and it runs via Deno's built-in Jupyter kernel.
-
 ## What is this?
 
 Jupyter notebook but in Typescript using Deno Jupyter notebook kernel.
