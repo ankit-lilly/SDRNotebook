@@ -1,0 +1,16 @@
+{
+  "workbench.editor.enablePreview": false,
+  "editor.minimap.enabled": false,
+  "editor.semanticHighlighting.enabled": false,
+  "editor.lightbulb.enabled": "off",
+  "breadcrumbs.enabled": false,
+  "workbench.activityBar.location": "hidden",
+  "workbench.statusBar.visible": false,
+  "notebook.compactView": true,
+  "notebook.globalToolbar": false,
+  "notebook.cellToolbarLocation": {
+    "default": "right"
+  },
+  "notebook.consolidatedOutputButton": true,
+  "editor.stickyScroll.enabled": false
+}
