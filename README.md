@@ -24,6 +24,9 @@ Note that this assumes that you already have AWS CLI configured with an SSO prof
 the SDR Neptune cluster.  If not, you can change the profile name in the connection code cell or set up your AWS CLI
 accordingly.
 
+Open any notebook from the `notebooks/examples` folder to get started.  The `quickstart.ipynb` notebook is a great place
+to start — it has runnable examples of Gremlin and Cypher queries, graph rendering, and charting.
+
 ## What is Deno? (for Node devs)
 
 [Deno](https://deno.com) is a TypeScript/JavaScript runtime — like Node, but with some key differences:
