@@ -1,5 +1,5 @@
 import { assertEquals, assertStringIncludes } from "@std/assert";
-import { toMimeBundle } from "./ui.ts";
+import { toMimeBundle } from "./ui.tsx";
 import { extractGraphData, renderGraph, renderGraphSvg } from "./graph.ts";
 import type { Edge, GraphData, Vertex } from "./types.ts";
 

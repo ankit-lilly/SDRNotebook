@@ -1,4 +1,6 @@
 import { scaleOrdinal } from "d3-scale";
+import { DISPLAY_SYMBOL } from "./types.ts";
+import type { RichDisplay } from "./types.ts";
 
 const COLORS = [
   "#2563EB",
@@ -31,9 +33,9 @@ function escapeXml(str: string): string {
     .replace(/"/g, "&quot;");
 }
 
-function jupyterDisplay(svg: string, plainText: string) {
+function jupyterDisplay(svg: string, plainText: string): RichDisplay {
   return {
-    [Symbol.for("Jupyter.display")]() {
+    [DISPLAY_SYMBOL]() {
       return { "image/svg+xml": svg, "text/plain": plainText };
     },
   };
@@ -50,7 +52,7 @@ export function bar(
     barHeight?: number;
     colors?: string[];
   } = {},
-) {
+): RichDisplay {
   const items = Array.isArray(data)
     ? data
     : Object.entries(data).map(([label, value]) => ({ label, value }));
@@ -114,7 +116,7 @@ export function pie(
   data: ChartItem[] | Record<string, number>,
   opts: { title?: string; size?: number; donut?: boolean; colors?: string[] } =
     {},
-) {
+): RichDisplay {
   const items = Array.isArray(data)
     ? data
     : Object.entries(data).map(([label, value]) => ({ label, value }));
@@ -234,7 +236,7 @@ export function groupedBar(
   data: Array<{ group: string; values: Record<string, number> }>,
   opts: { title?: string; width?: number; height?: number; colors?: string[] } =
     {},
-) {
+): RichDisplay {
   const width = opts.width ?? 700;
   const height = opts.height ?? 400;
   const palette = opts.colors ?? COLORS;

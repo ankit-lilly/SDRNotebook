@@ -1,6 +1,9 @@
 import { process as gp } from "gremlin";
 
-const { GraphTraversalSource, TraversalStrategies, Bytecode, Translator } = gp;
+const GraphTraversalSource = gp.GraphTraversalSource;
+const TraversalStrategies = gp.TraversalStrategies;
+const Bytecode = gp.Bytecode;
+const Translator = gp.Translator;
 
 /**
  * Creates a GraphTraversalSource with empty strategies (no remote connection).

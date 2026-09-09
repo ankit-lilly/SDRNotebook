@@ -1,5 +1,5 @@
 import { assertStringIncludes } from "@std/assert";
-import { toMimeBundle, ui } from "./ui.ts";
+import { toMimeBundle, ui } from "./ui.tsx";
 
 Deno.test("ui.table renders plain arrays", () => {
   const mime = toMimeBundle(ui.table([{ study: "A", version: "1.0" }]));

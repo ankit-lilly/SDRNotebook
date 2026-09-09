@@ -26,11 +26,12 @@ Deno.test("extractRegionFromUrl throws for non-API Gateway URL", () => {
 });
 
 Deno.test("ApiGatewaySigner.signRequest adds authorization headers", async () => {
-  const mockCredentials = async () => ({
-    accessKeyId: "AKIAIOSFODNN7EXAMPLE",
-    secretAccessKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
-    sessionToken: "FwoGZXIvYXdzEA==EXAMPLE",
-  });
+  const mockCredentials = () =>
+    Promise.resolve({
+      accessKeyId: "AKIAIOSFODNN7EXAMPLE",
+      secretAccessKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+      sessionToken: "FwoGZXIvYXdzEA==EXAMPLE",
+    });
 
   const signer = new ApiGatewaySigner(
     "https://abc123.execute-api.us-east-1.amazonaws.com/dev/api/v1/internal/neptune/query",

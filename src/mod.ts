@@ -23,7 +23,7 @@ export type {
 // Client
 export { createClient } from "./connection/client.ts";
 export { connectNotebook } from "./connection/notebook.ts";
-export { ui } from "./display/ui.ts";
+export { ui } from "./display/ui.tsx";
 
 // Gremlin
 export {

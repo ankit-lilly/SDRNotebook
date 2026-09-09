@@ -1,6 +1,6 @@
 import type { NeptuneClient } from "../connection/types.ts";
 
-export async function sampleStudies(
+export function sampleStudies(
   session: NeptuneClient,
   options: { minVersions?: number; limit?: number } = {},
 ): Promise<Array<{ alias: string; versionCount: number }>> {
@@ -16,7 +16,7 @@ export async function sampleStudies(
   );
 }
 
-export async function studyVersions(
+export function studyVersions(
   session: NeptuneClient,
   alias: string,
 ): Promise<Array<Record<string, unknown>>> {
@@ -26,11 +26,11 @@ export async function studyVersions(
   );
 }
 
-export async function studyNeighborhood(
+export function studyNeighborhood(
   session: NeptuneClient,
   alias: string,
   options: { hops?: number; limit?: number } = {},
-) {
+): Promise<unknown> {
   const hops = options.hops ?? 2;
   const limit = options.limit ?? 25;
   return session.gremlin(
@@ -40,7 +40,7 @@ export async function studyNeighborhood(
   );
 }
 
-export async function labelCounts(
+export function labelCounts(
   session: NeptuneClient,
 ): Promise<Array<Record<string, number>>> {
   return session.gremlin<Array<Record<string, number>>>(
@@ -48,7 +48,7 @@ export async function labelCounts(
   );
 }
 
-export async function edgeLabelCounts(
+export function edgeLabelCounts(
   session: NeptuneClient,
 ): Promise<Array<Record<string, number>>> {
   return session.gremlin<Array<Record<string, number>>>(

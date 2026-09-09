@@ -10,7 +10,7 @@
   "imports": {
     "@faker-js/faker": "npm:@faker-js/faker@^10.6.0",
     "@sdr-notebook/mod": "./src/mod.ts",
-    "@sdr-notebook/ui": "./src/display/ui.ts",
+    "@sdr-notebook/ui": "./src/display/ui.tsx",
     "@sdr-notebook/client": "./src/connection/client.ts",
     "@sdr-notebook/notebook": "./src/connection/notebook.ts",
     "@sdr-notebook/helpers": "./src/sdr/helpers.ts",
@@ -29,10 +29,14 @@
     "zod": "npm:zod@^4",
     "@langchain/core/tools": "npm:@langchain/core@^1/tools",
     "@langchain/core/prompts": "npm:@langchain/core@^1/prompts",
-    "@langchain/core/messages": "npm:@langchain/core@^1/messages"
+    "@langchain/core/messages": "npm:@langchain/core@^1/messages",
+    "preact": "npm:preact@^10",
+    "preact-render-to-string": "npm:preact-render-to-string@^6"
   },
   "compilerOptions": {
     "strict": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "jsx": "precompile",
+    "jsxImportSource": "preact"
   }
 }
