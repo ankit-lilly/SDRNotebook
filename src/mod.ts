@@ -10,11 +10,11 @@ export type {
   NeptuneClientOptions,
   NeptuneQuery,
   QueryType,
+  RequestSigner,
   Vertex,
   Edge,
   GraphData,
   GraphRendererOptions,
-  GraphQLResponse,
   RichDisplay,
 } from "./types.ts";
 
