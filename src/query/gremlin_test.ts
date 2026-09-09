@@ -17,7 +17,10 @@ Deno.test("toGremlinScript serializes traversal with out/values", () => {
   const g = createTraversalSource();
   const traversal = g.V().hasLabel("Study").out("hasVersion").values("name");
   const script = toGremlinScript(traversal);
-  assertEquals(script, "g.V().hasLabel('Study').out('hasVersion').values('name')");
+  assertEquals(
+    script,
+    "g.V().hasLabel('Study').out('hasVersion').values('name')",
+  );
 });
 
 Deno.test("toGremlinScript serializes predicates", async () => {
@@ -37,9 +40,13 @@ Deno.test("toGremlinScript serializes path traversal", () => {
 
 Deno.test("toGremlinScript serializes as/select", () => {
   const g = createTraversalSource();
-  const traversal = g.V().hasLabel("Study").as("s").out("hasVersion").as("v").select("s", "v");
+  const traversal = g.V().hasLabel("Study").as("s").out("hasVersion").as("v")
+    .select("s", "v");
   const script = toGremlinScript(traversal);
-  assertEquals(script, "g.V().hasLabel('Study').as('s').out('hasVersion').as('v').select('s', 'v')");
+  assertEquals(
+    script,
+    "g.V().hasLabel('Study').as('s').out('hasVersion').as('v').select('s', 'v')",
+  );
 });
 
 Deno.test("toGremlinScript serializes count", () => {

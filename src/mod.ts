@@ -1,39 +1,61 @@
-// Types
+// Stable public entrypoint for notebook consumers.
 export type {
   AwsClientConfig,
   AwsClientConstructor,
   CypherBuilder,
   CypherInput,
-  GraphPath,
   GremlinInput,
   NeptuneClient,
   NeptuneClientOptions,
   NeptuneQuery,
   QueryType,
   RequestSigner,
-  Vertex,
+} from "./connection/types.ts";
+export type {
   Edge,
   GraphData,
+  GraphPath,
   GraphRendererOptions,
   RichDisplay,
-} from "./types.ts";
+  Vertex,
+} from "./display/types.ts";
 
 // Client
-export { createClient } from "./client.ts";
-export { connectNotebook } from "./notebook.ts";
-export { ui } from "./ui.ts";
+export { createClient } from "./connection/client.ts";
+export { connectNotebook } from "./connection/notebook.ts";
+export { ui } from "./display/ui.ts";
 
 // Gremlin
-export { createTraversalSource, toGremlinScript, isTraversal } from "./gremlin.ts";
+export {
+  createTraversalSource,
+  isTraversal,
+  toGremlinScript,
+} from "./query/gremlin.ts";
 
 // Cypher
-export { buildCypherQuery, inlineParams, isCypherBuilder } from "./cypher.ts";
+export {
+  buildCypherQuery,
+  inlineParams,
+  isCypherBuilder,
+} from "./query/cypher.ts";
 
 // Graph Renderer
-export { renderGraph, renderGraphSvg, extractGraphData, openGraph, saveGraph } from "./graph-renderer.ts";
+export {
+  extractGraphData,
+  openGraph,
+  renderGraph,
+  renderGraphSvg,
+  saveGraph,
+} from "./display/graph.ts";
 
 // Charts
-export { bar, pie, groupedBar } from "./charts.ts";
+export { bar, groupedBar, pie } from "./display/charts.ts";
 
 // Domain Helpers (SDR-specific)
-export { edgeLabelCounts, labelCounts, sampleStudies, studyNeighborhood, studyVersions } from "./sdr/helpers.ts";
+export {
+  edgeLabelCounts,
+  labelCounts,
+  sampleStudies,
+  studyNeighborhood,
+  studyVersions,
+} from "./sdr/helpers.ts";

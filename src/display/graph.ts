@@ -1,19 +1,29 @@
-import {
-  forceLink,
-  forceManyBody,
-  forceCenter,
-  forceCollide,
-} from "d3-force";
+import { forceCenter, forceCollide, forceLink, forceManyBody } from "d3-force";
 import { scaleOrdinal } from "d3-scale";
-import type { Vertex, Edge, GraphData, GraphPath, GraphRendererOptions, RichDisplay } from "./types.ts";
+import type {
+  Edge,
+  GraphData,
+  GraphPath,
+  GraphRendererOptions,
+  RichDisplay,
+  Vertex,
+} from "./types.ts";
 import { DISPLAY_SYMBOL } from "./types.ts";
 
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 600;
 const DEFAULT_LABEL_PROP = "name";
 const DEFAULT_COLORS = [
-  "#4A90D9", "#50C878", "#F5A623", "#D0021B", "#9013FE",
-  "#417505", "#BD10E0", "#7ED321", "#4A4A4A", "#B8E986",
+  "#4A90D9",
+  "#50C878",
+  "#F5A623",
+  "#D0021B",
+  "#9013FE",
+  "#417505",
+  "#BD10E0",
+  "#7ED321",
+  "#4A4A4A",
+  "#B8E986",
 ];
 
 interface SimNode {
@@ -130,8 +140,12 @@ function layoutTree(
   const hasParent = new Set<string>();
 
   for (const link of links) {
-    const sourceId = typeof link.source === "string" ? link.source : link.source.id;
-    const targetId = typeof link.target === "string" ? link.target : link.target.id;
+    const sourceId = typeof link.source === "string"
+      ? link.source
+      : link.source.id;
+    const targetId = typeof link.target === "string"
+      ? link.target
+      : link.target.id;
     if (!children.has(sourceId)) children.set(sourceId, []);
     children.get(sourceId)!.push(targetId);
     hasParent.add(targetId);
@@ -195,19 +209,29 @@ function layoutTree(
 function layoutForce(
   nodes: SimNode[],
   links: SimLink[],
-  opts: { width: number; height: number; linkDist: number; charge: number; nodeRadius: number },
+  opts: {
+    width: number;
+    height: number;
+    linkDist: number;
+    charge: number;
+    nodeRadius: number;
+  },
 ): void {
   const n = nodes.length;
   for (let i = 0; i < n; i++) {
     const angle = (2 * Math.PI * i) / n;
-    nodes[i]!.x = opts.width / 2 + (Math.min(opts.width, opts.height) / 3) * Math.cos(angle);
-    nodes[i]!.y = opts.height / 2 + (Math.min(opts.width, opts.height) / 3) * Math.sin(angle);
+    nodes[i]!.x = opts.width / 2 +
+      (Math.min(opts.width, opts.height) / 3) * Math.cos(angle);
+    nodes[i]!.y = opts.height / 2 +
+      (Math.min(opts.width, opts.height) / 3) * Math.sin(angle);
     nodes[i]!.vx = 0;
     nodes[i]!.vy = 0;
   }
 
   // deno-lint-ignore no-explicit-any
-  const linkForce = forceLink(links as any).id((d: any) => d.id).distance(opts.linkDist);
+  const linkForce = forceLink(links as any).id((d: any) => d.id).distance(
+    opts.linkDist,
+  );
   // deno-lint-ignore no-explicit-any
   linkForce.initialize(nodes as any, () => Math.random());
 
@@ -275,13 +299,17 @@ export function renderGraphSvg(
 
   if (data.vertices.length === 0) {
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
-  <text x="${width / 2}" y="${height / 2}" text-anchor="middle" fill="#666" font-family="sans-serif">Empty graph</text>
+  <text x="${width / 2}" y="${
+      height / 2
+    }" text-anchor="middle" fill="#666" font-family="sans-serif">Empty graph</text>
 </svg>`;
   }
 
   const labels = [...new Set(data.vertices.map((v) => v.label))];
   const customColors = options.nodeColors ?? {};
-  const colorScale = scaleOrdinal<string>().domain(labels).range(DEFAULT_COLORS);
+  const colorScale = scaleOrdinal<string>().domain(labels).range(
+    DEFAULT_COLORS,
+  );
 
   function getColor(label: string): string {
     return customColors[label] ?? colorScale(label);
@@ -312,8 +340,12 @@ export function renderGraphSvg(
   // Resolve link source/target to SimNode refs (needed after layout)
   const nodeById = new Map(nodes.map((n) => [n.id, n]));
   for (const link of links) {
-    if (typeof link.source === "string") link.source = nodeById.get(link.source) ?? link.source;
-    if (typeof link.target === "string") link.target = nodeById.get(link.target) ?? link.target;
+    if (typeof link.source === "string") {
+      link.source = nodeById.get(link.source) ?? link.source;
+    }
+    if (typeof link.target === "string") {
+      link.target = nodeById.get(link.target) ?? link.target;
+    }
   }
 
   // Compute bounding box from actual node positions
@@ -347,7 +379,8 @@ export function renderGraphSvg(
     if (layoutMode === "tree") {
       // Curved path: vertical down from source, then curve to target
       const midY = (source.y + target.y) / 2;
-      pathD = `M ${source.x} ${source.y} C ${source.x} ${midY}, ${target.x} ${midY}, ${target.x} ${target.y}`;
+      pathD =
+        `M ${source.x} ${source.y} C ${source.x} ${midY}, ${target.x} ${midY}, ${target.x} ${target.y}`;
     } else {
       pathD = `M ${source.x} ${source.y} L ${target.x} ${target.y}`;
     }
@@ -355,7 +388,11 @@ export function renderGraphSvg(
     const mx = (source.x + target.x) / 2;
     const my = (source.y + target.y) / 2;
     const edgeLabelSvg = showEdgeLabels
-      ? `\n  <text x="${mx}" y="${my - 6}" text-anchor="middle" font-size="${edgeFontSize}" fill="#555" font-family="sans-serif">${escapeXml(link.label)}</text>`
+      ? `\n  <text x="${mx}" y="${
+        my - 6
+      }" text-anchor="middle" font-size="${edgeFontSize}" fill="#555" font-family="sans-serif">${
+        escapeXml(link.label)
+      }</text>`
       : "";
     return `  <path d="${pathD}" fill="none" stroke="#999" stroke-opacity="0.5" stroke-width="1" marker-end="url(#arrow)"/>${edgeLabelSvg}`;
   }).join("\n");
@@ -365,21 +402,37 @@ export function renderGraphSvg(
     const color = getColor(node.label);
     const displayText = escapeXml(node.displayName.slice(0, labelMaxChars));
     const typeLine = showNodeType
-      ? `\n  <text x="${x}" y="${y + nodeFontSize + 4}" text-anchor="middle" font-size="${nodeFontSize - 1}" fill="rgba(255,255,255,0.7)" font-family="sans-serif">${escapeXml(node.label)}</text>`
+      ? `\n  <text x="${x}" y="${
+        y + nodeFontSize + 4
+      }" text-anchor="middle" font-size="${
+        nodeFontSize - 1
+      }" fill="rgba(255,255,255,0.7)" font-family="sans-serif">${
+        escapeXml(node.label)
+      }</text>`
       : "";
     return `  <circle cx="${x}" cy="${y}" r="${nodeRadius}" fill="${color}" stroke="#fff" stroke-width="2"/>
-  <text x="${x}" y="${y - 2}" text-anchor="middle" font-size="${nodeFontSize}" fill="#fff" font-weight="bold" font-family="sans-serif">${displayText}</text>${typeLine}`;
+  <text x="${x}" y="${
+      y - 2
+    }" text-anchor="middle" font-size="${nodeFontSize}" fill="#fff" font-weight="bold" font-family="sans-serif">${displayText}</text>${typeLine}`;
   }).join("\n");
 
   const legendSvg = labels.map((label, i) => {
     const y = vbY + 20 + i * 22;
-    return `  <rect x="${legendX}" y="${y}" width="12" height="12" fill="${getColor(label)}"/>
-  <text x="${legendX + 18}" y="${y + 11}" font-size="11" fill="#333" font-family="sans-serif">${escapeXml(label)}</text>`;
+    return `  <rect x="${legendX}" y="${y}" width="12" height="12" fill="${
+      getColor(label)
+    }"/>
+  <text x="${legendX + 18}" y="${
+      y + 11
+    }" font-size="11" fill="#333" font-family="sans-serif">${
+      escapeXml(label)
+    }</text>`;
   }).join("\n");
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="${vbX} ${vbY} ${vbW} ${vbH}">
   <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="${nodeRadius + 8}" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arrow" viewBox="0 0 10 10" refX="${
+    nodeRadius + 8
+  }" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#999"/>
     </marker>
   </defs>
@@ -393,13 +446,19 @@ ${legendSvg}
 // ── Rich display wrapper ──
 
 function parseInput(dataOrPaths: GraphData | GraphPath[]): GraphData {
-  if (typeof dataOrPaths === "object" && dataOrPaths !== null && "vertices" in dataOrPaths) {
+  if (
+    typeof dataOrPaths === "object" && dataOrPaths !== null &&
+    "vertices" in dataOrPaths
+  ) {
     return dataOrPaths as GraphData;
   }
   return extractGraphData(dataOrPaths as GraphPath[]);
 }
 
-export function renderGraph(dataOrPaths: GraphData | GraphPath[], options: GraphRendererOptions = {}): RichDisplay {
+export function renderGraph(
+  dataOrPaths: GraphData | GraphPath[],
+  options: GraphRendererOptions = {},
+): RichDisplay {
   const graphData = parseInput(dataOrPaths);
   const svg = renderGraphSvg(graphData, options);
   return {
@@ -407,7 +466,8 @@ export function renderGraph(dataOrPaths: GraphData | GraphPath[], options: Graph
       return {
         "image/svg+xml": svg,
         "text/html": `<div style="overflow:auto;max-width:100%">${svg}</div>`,
-        "text/plain": `Graph: ${graphData.vertices.length} nodes, ${graphData.edges.length} edges`,
+        "text/plain":
+          `Graph: ${graphData.vertices.length} nodes, ${graphData.edges.length} edges`,
       };
     },
   };
@@ -443,7 +503,9 @@ ${responsiveSvg}
   await Deno.writeTextFile(filePath, html);
   const cmd = new Deno.Command("open", { args: [filePath] });
   await cmd.output();
-  console.log(`Opened ${filePath} in browser (${graphData.vertices.length} nodes, ${graphData.edges.length} edges)`);
+  console.log(
+    `Opened ${filePath} in browser (${graphData.vertices.length} nodes, ${graphData.edges.length} edges)`,
+  );
 }
 
 export async function saveGraph(
@@ -454,5 +516,7 @@ export async function saveGraph(
   const graphData = parseInput(dataOrPaths);
   const svg = renderGraphSvg(graphData, options);
   await Deno.writeTextFile(filePath, svg);
-  console.log(`Saved to ${filePath} (${graphData.vertices.length} nodes, ${graphData.edges.length} edges)`);
+  console.log(
+    `Saved to ${filePath} (${graphData.vertices.length} nodes, ${graphData.edges.length} edges)`,
+  );
 }

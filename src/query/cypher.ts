@@ -31,7 +31,9 @@ export function inlineParams(
  * Build a Cypher query string from a @neo4j/cypher-builder clause.
  * Calls .build() and inlines all params for Neptune compatibility.
  */
-export function buildCypherQuery(clause: { build(): { cypher: string; params: Record<string, unknown> } }): string {
+export function buildCypherQuery(
+  clause: { build(): { cypher: string; params: Record<string, unknown> } },
+): string {
   const { cypher, params } = clause.build();
   return inlineParams(cypher, params);
 }

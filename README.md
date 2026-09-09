@@ -24,7 +24,7 @@ Note that this assumes that you already have AWS CLI configured with an SSO prof
 the SDR Neptune cluster.  If not, you can change the profile name in the connection code cell or set up your AWS CLI
 accordingly.
 
-Open any notebook from the `notebooks/examples` folder to get started.  The `quickstart.ipynb` notebook is a great place
+Open any notebook from the `examples` folder to get started.  The `quickstart.ipynb` notebook is a great place
 to start — it has runnable examples of Gremlin and Cypher queries, graph rendering, and charting.
 
 ## What is Deno? (for Node devs)
@@ -90,7 +90,7 @@ file.  There's no special syntax, no magic.  The only difference from a regular 
 1. **Top-level `await`** works (no need to wrap in an async function)
 2. **Variables persist** across cells within the same session
 3.  **Rich output** — you can return objects with a `Symbol.for("Jupyter.display")` method to render
-HTML, SVG, or images inline (that's how `GraphRenderer` and the chart helpers work)
+HTML, SVG, or images inline (that's how `ui.graph()` and the chart helpers work)
 
 If you can write this in a `.ts` file, you can write it in a notebook cell:
 ```ts
@@ -116,25 +116,48 @@ const result = await session.gremlin(`g.V().hasLabel("Study").count()`);
 ui.json(result);
 ```
 
-That's it. Two cells, one import path. Everything else — `GraphRenderer`, `bar()`, `pie()`, Cypher builder, and low-level `createClient(...)` access — is optional and only imported when you need it.
+That's it. Two cells, one import path. Everything else — `ui.graph()`, `bar()`, `pie()`, Cypher builder, and low-level `createClient(...)` access — is optional and only imported when you need it.
 
-**What `createClient()` does under the hood:**
+**Connection flow:** `connectNotebook()` is an alias for `createClient()`. The client
+loads AWS credentials from your profile, resolves the configured REST query endpoint,
+and signs requests with SigV4 for API Gateway. Both query languages use a JSON body
+of `{ type, query }`. The client unwraps the response's `data` field when present.
+Pass `url` explicitly to override the endpoint selected from your profile name.
 
-1. Reads your AWS credentials from `~/.aws/config` using the profile you specified
-2. Calls `ListGraphqlApis` to find the AppSync endpoint URL (so you don't have to hardcode it)
-3. Returns a client that signs every request with SigV4 and sends it to AppSync
+## Code layout
 
-**What `client.gremlin(query)` does:**
+```text
+src/
+  mod.ts                 Public API for notebooks
+  connection/            AWS authentication, signing, REST transport, client setup
+    notebook.ts          Notebook-friendly connection alias
+    types.ts             Client and connection contracts
+  query/                 Gremlin translation and Cypher parameter handling
+  display/               Jupyter HTML/SVG output, tables, charts, and graphs
+    types.ts             Graph data, rendering options, and display contracts
+  sdr/                   Study-specific queries and graph summaries
+examples/                Runnable notebooks
+```
 
-1. Wraps your query string in a GraphQL mutation: `mutation { executeQuery(input: { type: "gremlin", query: "..." }) }`
-2. Signs the HTTP request with SigV4 (same as what `nqcli` does in Go)
-3. POSTs to AppSync, which invokes the Lambda resolver, which runs the query on Neptune
-4. Unwraps the nested response (GraphQL envelope → stringified JSON → parsed result)
-5. Returns the parsed result to your notebook cell
+Tests live beside the modules they exercise (`*_test.ts`). Import internal modules
+directly by relative path; reserve `src/mod.ts` for the public API. Keep AWS and HTTP
+code in `connection`, query-language conversion in `query`, presentation in `display`,
+and SDR-specific traversals in `sdr`. Renderers accept data without fetching it.
 
-**Where does `deno.json` fit?**
+Notebook import aliases remain stable even when implementation files move:
 
-`deno.json` is like `package.json` for Deno. It defines an import map so you can write stable imports like `@sdr-notebook/mod` instead of guessing relative paths like `../src/mod.ts`. It also defines the `deno test` and `deno check` tasks.
+- `@sdr-notebook/mod` — the complete public API
+- `@sdr-notebook/client` — client creation
+- `@sdr-notebook/notebook` — notebook connection
+- `@sdr-notebook/ui` — explicit display helpers
+- `@sdr-notebook/helpers` — SDR queries
+
+```bash
+deno task check       # Type-check the public API and its dependencies
+deno task test        # Run tests with mocked data and requests
+deno task fmt         # Format TypeScript and Deno configuration
+deno task fmt:check   # Verify formatting
+```
 
 ## Setup (one-time)
 
@@ -185,7 +208,7 @@ SSO sessions expire every 8–12 hours. If a notebook cell fails with a credenti
 ### 2. Open a notebook
 
 ```bash
-code notebooks/examples/quickstart.ipynb
+code examples/quickstart.ipynb
 ```
 
 When the notebook opens, click **"Select Kernel"** (top right) → **"Jupyter Kernel..."** → **"Deno"**.
@@ -203,12 +226,20 @@ Variables persist across cells in the same session. If things get weird, restart
 `Cmd+Shift+P` → "Create: New Jupyter Notebook" → select Deno kernel. Start with:
 
 ```ts
-import { connectNotebook, sampleStudies, GraphRenderer, bar, pie, ui } from "@sdr-notebook/mod";
+import { connectNotebook, sampleStudies, bar, pie, ui } from "@sdr-notebook/mod";
 
 const session = await connectNotebook({ profile: "dsoadev" });
 const studies = await sampleStudies(session, { minVersions: 2, limit: 5 });
 ui.table(studies);
 ```
+
+## Ollama tool-calling demo
+
+Open `examples/ollama-gremlin.ipynb` to ask `granite4:7b` about SDR through
+`http://localhost:11434`. The notebook uses LangChain `ChatOllama`, a prompt chain, and a Zod-defined `execute_gremlin` tool,
+runs the selected read query through the existing REST client, and sends its
+result back to Ollama. It displays both the answer and the complete tool trace.
+Authenticate with AWS SSO first and ensure that model is installed on the Ollama server.
 
 ## Example notebooks
 
@@ -216,7 +247,7 @@ ui.table(studies);
 ┌─────────────────────────────────┬────────────────────────────────────────────────────────────────┐
 │            Notebook             │                         What it covers                         │
 ├─────────────────────────────────┼────────────────────────────────────────────────────────────────┤
-│ `examples/quickstart.ipynb`     │  Gremlin & Cypher crash courses, graph schema, GraphRenderer   │
+│ `examples/quickstart.ipynb`     │  Gremlin & Cypher crash courses, graph schema, graph rendering   │
 │                                 │ reference, tips & tricks                                       │
 ├─────────────────────────────────┼────────────────────────────────────────────────────────────────┤
 │ `examples/explore-study.ipynb`  │  Deep-dive into a specific study's versions, designs, and      │
@@ -283,15 +314,15 @@ Useful methods on `ui`:
 
 ### `createClient`
 
-Creates the low-level AppSync-backed Neptune client.
+Creates the low-level REST-backed Neptune client.
 
 ```ts
 import { createClient } from "@sdr-notebook/mod";
 
 const client = await createClient({
   profile: "dsoadev",        // AWS CLI profile (required)
-  region: "us-east-2",       // optional — auto-detected from profile
-  url: "https://...",        // optional — skips AppSync discovery
+  region: "us-east-2",       // optional — inferred from the endpoint
+  url: "https://...",        // optional — overrides the REST endpoint
 });
 ```
 
@@ -306,7 +337,7 @@ const g = client.g();
 await client.gremlin(g.V().hasLabel("Study").count());
 
 // Cypher — raw string (recommended in notebooks)
-await client.cypherRaw(`MATCH (s:Study) RETURN s.name LIMIT 5`);
+await client.cypher(`MATCH (s:Study) RETURN s.name LIMIT 5`);
 
 // Cypher — typed builder (useful in .ts files)
 import Cypher from "@neo4j/cypher-builder";
@@ -321,20 +352,18 @@ regular `.ts` files, but **not in notebook cells** (VS Code limitation with the 
 notebooks, raw strings are the practical choice.  The quickstart notebook has a full Gremlin and
 Cypher cheat sheet to help.
 
-### `GraphRenderer`
+### Graph rendering
 
-Renders graph query results as SVG diagrams. Use `.path()` in your Gremlin query to capture vertices and edges.
+Use `ui.graph(...)` for inline output, or the standalone functions for rendering,
+opening, and saving graphs. Gremlin `.path()` results and normalized
+`{ vertices, edges }` data are accepted.
 
 ```ts
-const renderer = new GraphRenderer({
-  layout: "tree",       // "force" (default) or "tree" (hierarchical)
-  nodeDisplayText: "label",  // "property" | "label" | "id"
-  // ... many more options — see quickstart.ipynb for the full reference
-});
+import { ui, openGraph, saveGraph } from "@sdr-notebook/mod";
 
-renderer.render(paths);          // inline in notebook
-await renderer.open(paths);      // open in browser (full viewport, zoomable)
-await renderer.save(paths, "graph.svg");  // save to file
+ui.graph(paths, { layout: "tree", nodeDisplayText: "label" });
+await openGraph(paths, { layout: "tree" });
+await saveGraph(paths, "graph.svg", { layout: "tree" });
 ```
 
 ### Charts
@@ -364,7 +393,7 @@ groupedBar([
 ## Running tests
 
 ```bash
-cd notebooks && deno test --allow-all
+deno task test
 ```
 
 Tests cover the Gremlin translator, Cypher builder, SigV4 signer, response parsing, and graph

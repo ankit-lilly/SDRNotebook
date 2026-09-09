@@ -8,7 +8,9 @@ Deno.test("ui.table renders plain arrays", () => {
 });
 
 Deno.test("ui.json renders transformed plain values", () => {
-  const rows = [{ study: "A", version: "1.0" }].filter((row) => row.study === "A");
+  const rows = [{ study: "A", version: "1.0" }].filter((row) =>
+    row.study === "A"
+  );
   const mime = toMimeBundle(ui.json(rows));
-  assertStringIncludes(String(mime["text/plain"]), "\"study\": \"A\"");
+  assertStringIncludes(String(mime["text/plain"]), '"study": "A"');
 });

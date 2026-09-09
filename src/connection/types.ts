@@ -1,6 +1,4 @@
-import type { createTraversalSource } from "./gremlin.ts";
-
-export const DISPLAY_SYMBOL = Symbol.for("Jupyter.display");
+import type { createTraversalSource } from "../query/gremlin.ts";
 
 export type QueryType = "gremlin" | "cypher";
 
@@ -47,50 +45,4 @@ export interface NeptuneClient {
   aws<T>(Client: AwsClientConstructor<T>, config?: Record<string, unknown>): T;
   gremlin<T = unknown>(queryOrTraversal: GremlinInput): Promise<T>;
   cypher<T = unknown>(queryOrBuilder: CypherInput): Promise<T>;
-}
-
-export interface Vertex {
-  id: string;
-  label: string;
-  properties?: Record<string, unknown>;
-}
-
-export interface Edge {
-  id: string;
-  label: string;
-  inV: string;
-  outV: string;
-  properties?: Record<string, unknown>;
-}
-
-export interface GraphData {
-  vertices: Vertex[];
-  edges: Edge[];
-}
-
-export interface GraphPath {
-  objects: Array<Record<string, unknown>>;
-}
-
-export interface RichDisplay {
-  [key: symbol]: () => Record<string, string | Record<string, unknown>>;
-}
-
-export interface GraphRendererOptions {
-  width?: number;
-  height?: number;
-  nodeColors?: Record<string, string>;
-  labelProperty?: string;
-  labelMaxChars?: number;
-  nodeRadius?: number;
-  nodeFontSize?: number;
-  edgeFontSize?: number;
-  linkDistance?: number;
-  chargeStrength?: number;
-  showNodeType?: boolean;
-  showEdgeLabels?: boolean;
-  nodeDisplayText?: "property" | "label" | "id";
-  layout?: "force" | "tree";
-  levelSpacing?: number;
-  siblingSpacing?: number;
 }

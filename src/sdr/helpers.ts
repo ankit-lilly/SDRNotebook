@@ -1,4 +1,4 @@
-import type { NeptuneClient } from "../types.ts";
+import type { NeptuneClient } from "../connection/types.ts";
 
 export async function sampleStudies(
   session: NeptuneClient,
@@ -43,11 +43,15 @@ export async function studyNeighborhood(
 export async function labelCounts(
   session: NeptuneClient,
 ): Promise<Array<Record<string, number>>> {
-  return session.gremlin<Array<Record<string, number>>>(`g.V().groupCount().by(label)`);
+  return session.gremlin<Array<Record<string, number>>>(
+    `g.V().groupCount().by(label)`,
+  );
 }
 
 export async function edgeLabelCounts(
   session: NeptuneClient,
 ): Promise<Array<Record<string, number>>> {
-  return session.gremlin<Array<Record<string, number>>>(`g.E().groupCount().by(label)`);
+  return session.gremlin<Array<Record<string, number>>>(
+    `g.E().groupCount().by(label)`,
+  );
 }

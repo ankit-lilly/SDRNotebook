@@ -6,7 +6,9 @@ const { GraphTraversalSource, TraversalStrategies, Bytecode, Translator } = gp;
  * Creates a GraphTraversalSource with empty strategies (no remote connection).
  * Use for building traversals with full LSP autocomplete.
  */
-export function createTraversalSource(): InstanceType<typeof GraphTraversalSource> {
+export function createTraversalSource(): InstanceType<
+  typeof GraphTraversalSource
+> {
   const strategies = new TraversalStrategies();
   return new GraphTraversalSource(null, strategies, new Bytecode());
 }
@@ -27,7 +29,9 @@ export function toGremlinScript(traversal: { getBytecode(): unknown }): string {
  * Type guard: checks if a value is a Gremlin traversal (has getBytecode method)
  * vs a raw string.
  */
-export function isTraversal(value: unknown): value is { getBytecode(): unknown } {
+export function isTraversal(
+  value: unknown,
+): value is { getBytecode(): unknown } {
   return (
     typeof value === "object" &&
     value !== null &&

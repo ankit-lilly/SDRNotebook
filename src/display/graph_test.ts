@@ -1,7 +1,7 @@
 import { assertEquals, assertStringIncludes } from "@std/assert";
 import { toMimeBundle } from "./ui.ts";
-import { extractGraphData, renderGraphSvg, renderGraph } from "./graph-renderer.ts";
-import type { Vertex, Edge, GraphData } from "./types.ts";
+import { extractGraphData, renderGraph, renderGraphSvg } from "./graph.ts";
+import type { Edge, GraphData, Vertex } from "./types.ts";
 
 const sampleVertices: Vertex[] = [
   { id: "v1", label: "Study", properties: { name: "Study-001" } },
@@ -18,16 +18,36 @@ Deno.test("extractGraphData from path result", () => {
   const pathResult = [
     {
       objects: [
-        { id: "v1", label: "Study", type: "vertex", properties: { name: [{ value: "Study-001" }] } },
+        {
+          id: "v1",
+          label: "Study",
+          type: "vertex",
+          properties: { name: [{ value: "Study-001" }] },
+        },
         { id: "e1", label: "hasVersion", type: "edge", inV: "v2", outV: "v1" },
-        { id: "v2", label: "StudyVersion", type: "vertex", properties: { name: [{ value: "v1.0" }] } },
+        {
+          id: "v2",
+          label: "StudyVersion",
+          type: "vertex",
+          properties: { name: [{ value: "v1.0" }] },
+        },
       ],
     },
     {
       objects: [
-        { id: "v1", label: "Study", type: "vertex", properties: { name: [{ value: "Study-001" }] } },
+        {
+          id: "v1",
+          label: "Study",
+          type: "vertex",
+          properties: { name: [{ value: "Study-001" }] },
+        },
         { id: "e2", label: "hasVersion", type: "edge", inV: "v3", outV: "v1" },
-        { id: "v3", label: "StudyVersion", type: "vertex", properties: { name: [{ value: "v2.0" }] } },
+        {
+          id: "v3",
+          label: "StudyVersion",
+          type: "vertex",
+          properties: { name: [{ value: "v2.0" }] },
+        },
       ],
     },
   ];
@@ -38,16 +58,20 @@ Deno.test("extractGraphData from path result", () => {
 
 Deno.test("extractGraphData deduplicates vertices by id", () => {
   const pathResult = [
-    { objects: [
-      { id: "v1", label: "Study", type: "vertex" },
-      { id: "e1", label: "rel", type: "edge", inV: "v2", outV: "v1" },
-      { id: "v2", label: "Other", type: "vertex" },
-    ] },
-    { objects: [
-      { id: "v1", label: "Study", type: "vertex" },
-      { id: "e2", label: "rel", type: "edge", inV: "v3", outV: "v1" },
-      { id: "v3", label: "Other", type: "vertex" },
-    ] },
+    {
+      objects: [
+        { id: "v1", label: "Study", type: "vertex" },
+        { id: "e1", label: "rel", type: "edge", inV: "v2", outV: "v1" },
+        { id: "v2", label: "Other", type: "vertex" },
+      ],
+    },
+    {
+      objects: [
+        { id: "v1", label: "Study", type: "vertex" },
+        { id: "e2", label: "rel", type: "edge", inV: "v3", outV: "v1" },
+        { id: "v3", label: "Other", type: "vertex" },
+      ],
+    },
   ];
   const graph = extractGraphData(pathResult);
   assertEquals(graph.vertices.length, 3);

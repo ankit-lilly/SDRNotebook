@@ -1,20 +1,23 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@std/assert@1": "1.0.19",
-    "jsr:@std/internal@^1.0.12": "1.0.12",
+    "jsr:@std/assert@^1.0.19": "1.0.19",
+    "jsr:@std/internal@^1.0.12": "1.0.14",
     "npm:@aws-crypto/sha256-js@^5.2.0": "5.2.0",
     "npm:@aws-sdk/client-s3@*": "3.1018.0",
     "npm:@aws-sdk/credential-providers@^3.1127.0": "3.1127.0",
     "npm:@aws-sdk/shared-ini-file-loader@^3.374.0": "3.374.0",
     "npm:@aws-sdk/signature-v4@^3.374.0": "3.374.0",
     "npm:@faker-js/faker@^10.6.0": "10.6.0",
+    "npm:@langchain/core@1": "1.2.9",
+    "npm:@langchain/ollama@1": "1.3.0_@langchain+core@1.2.9",
     "npm:@neo4j/cypher-builder@^3.3.0": "3.3.0",
-    "npm:@smithy/protocol-http@^4.1.8": "4.1.8",
+    "npm:@smithy/protocol-http@^5.6.2": "5.6.2",
     "npm:d3-force@3": "3.0.0",
     "npm:d3-scale@^4.0.2": "4.0.2",
     "npm:d3-timer@^3.0.1": "3.0.1",
-    "npm:gremlin@^3.8.1": "3.8.1"
+    "npm:gremlin@^3.8.1": "3.8.1",
+    "npm:zod@4": "4.5.4"
   },
   "jsr": {
     "@std/assert@1.0.19": {
@@ -23,8 +26,8 @@
         "jsr:@std/internal"
       ]
     },
-    "@std/internal@1.0.12": {
-      "integrity": "972a634fd5bc34b242024402972cd5143eac68d8dffaca5eaa4dba30ce17b027"
+    "@std/internal@1.0.14": {
+      "integrity": "291516b3d4c35024d6ffbc0a9df5bf4c64116e05b50012cf846710152d2ffdf7"
     }
   },
   "npm": {
@@ -156,7 +159,7 @@
         "@smithy/middleware-stack",
         "@smithy/node-config-provider",
         "@smithy/node-http-handler",
-        "@smithy/protocol-http@5.3.12",
+        "@smithy/protocol-http",
         "@smithy/smithy-client",
         "@smithy/types@4.18.0",
         "@smithy/url-parser",
@@ -344,7 +347,7 @@
         "@aws-sdk/types",
         "@aws-sdk/util-arn-parser",
         "@smithy/node-config-provider",
-        "@smithy/protocol-http@5.3.12",
+        "@smithy/protocol-http",
         "@smithy/types@4.18.0",
         "@smithy/util-config-provider",
         "tslib@2.8.1"
@@ -355,7 +358,7 @@
       "integrity": "sha512-5DTBTiotEES1e2jOHAq//zyzCjeMB78lEHd35u15qnrid4Nxm7diqIf9fQQ3Ov0ChH1V3Vvt13thOnrACmfGVQ==",
       "dependencies": [
         "@aws-sdk/types",
-        "@smithy/protocol-http@5.3.12",
+        "@smithy/protocol-http",
         "@smithy/types@4.18.0",
         "tslib@2.8.1"
       ],
@@ -372,7 +375,7 @@
         "@aws-sdk/types",
         "@smithy/is-array-buffer@4.2.2",
         "@smithy/node-config-provider",
-        "@smithy/protocol-http@5.3.12",
+        "@smithy/protocol-http",
         "@smithy/types@4.18.0",
         "@smithy/util-middleware@4.2.12",
         "@smithy/util-stream",
@@ -385,7 +388,7 @@
       "integrity": "sha512-wAr2REfKsqoKQ+OkNqvOShnBoh+nkPurDKW7uAeVSu6kUECnWlSJiPvnoqxGlfousEY/v9LfS9sNc46hjSYDIQ==",
       "dependencies": [
         "@aws-sdk/types",
-        "@smithy/protocol-http@5.3.12",
+        "@smithy/protocol-http",
         "@smithy/types@4.18.0",
         "tslib@2.8.1"
       ],
@@ -414,7 +417,7 @@
       "dependencies": [
         "@aws-sdk/types",
         "@aws/lambda-invoke-store@0.2.4",
-        "@smithy/protocol-http@5.3.12",
+        "@smithy/protocol-http",
         "@smithy/types@4.18.0",
         "tslib@2.8.1"
       ],
@@ -428,7 +431,7 @@
         "@aws-sdk/util-arn-parser",
         "@smithy/core",
         "@smithy/node-config-provider",
-        "@smithy/protocol-http@5.3.12",
+        "@smithy/protocol-http",
         "@smithy/signature-v4@5.7.3",
         "@smithy/smithy-client",
         "@smithy/types@4.18.0",
@@ -456,7 +459,7 @@
         "@aws-sdk/types",
         "@aws-sdk/util-endpoints",
         "@smithy/core",
-        "@smithy/protocol-http@5.3.12",
+        "@smithy/protocol-http",
         "@smithy/types@4.18.0",
         "@smithy/util-retry",
         "tslib@2.8.1"
@@ -606,9 +609,34 @@
       "integrity": "sha512-sl4Bm6yiMNYrZKkqqDFWN0UfnWhlS8ivKxrYl+6t0gCLrqr8y3B2IqZZbFRkfaVVp7C/baApyh71P+LeE1A2sQ==",
       "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/@aws/lambda-invoke-store/-/lambda-invoke-store-0.3.0.tgz"
     },
+    "@cfworker/json-schema@4.1.1": {
+      "integrity": "sha512-gAmrUZSGtKc3AiBL71iNWxDsyUC5uMaKKGdvzYsBoTW/xi42JQHl7eKV2OYzCUqvc+D2RCcf7EXY2iCyFIk6og==",
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/@cfworker/json-schema/-/json-schema-4.1.1.tgz"
+    },
     "@faker-js/faker@10.6.0": {
       "integrity": "sha512-3RQHgEtvL1Frl/d1cSreo7qhJ3Gk1OdNUai/CtZ8G+wYeRQnJih3s9xJ9/kgYekPQRdwgh0HXRPqMlzWGwivIQ==",
       "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/@faker-js/faker/-/faker-10.6.0.tgz"
+    },
+    "@langchain/core@1.2.9": {
+      "integrity": "sha512-conzSEj9Zu1AyXJLXsSbgrtxtxinmI1yGqQ5CIJZSoV5rvv+yvQE/vgBnoySpBQ/bl3YPgj2FL/gbDjWykLSfg==",
+      "dependencies": [
+        "@cfworker/json-schema",
+        "@standard-schema/spec",
+        "js-tiktoken",
+        "langsmith",
+        "mustache",
+        "p-queue",
+        "zod"
+      ],
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/@langchain/core/-/core-1.2.9.tgz"
+    },
+    "@langchain/ollama@1.3.0_@langchain+core@1.2.9": {
+      "integrity": "sha512-uzLkZVTXN0SI5zAoJbJzL4y/QN7gbmJ1txBgFfqJ5M0Qf+Yu2Zu8q98L3jIrfM+akWMaNmRU4R4APhcfQmeIsw==",
+      "dependencies": [
+        "@langchain/core",
+        "ollama"
+      ],
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/@langchain/ollama/-/ollama-1.3.0.tgz"
     },
     "@neo4j/cypher-builder@3.3.0": {
       "integrity": "sha512-a0XKEAJao36hSPfVDEjfsQUv8+MW+b1uorUaemN2fqCJ+Gn7QScsBs9rgWjempp1yU1dTfGzX0ZsAfj0WoV+4Q==",
@@ -800,7 +828,7 @@
     "@smithy/middleware-content-length@4.2.12": {
       "integrity": "sha512-YE58Yz+cvFInWI/wOTrB+DbvUVz/pLn5mC5MvOV4fdRUc6qGwygyngcucRQjAhiCEbmfLOXX0gntSIcgMvAjmA==",
       "dependencies": [
-        "@smithy/protocol-http@5.3.12",
+        "@smithy/protocol-http",
         "@smithy/types@4.18.0",
         "tslib@2.8.1"
       ],
@@ -824,7 +852,7 @@
       "integrity": "sha512-Y1Rav7m5CFRPQyM4CI0koD/bXjyjJu3EQxZZhtLGD88WIrBrQ7kqXM96ncd6rYnojwOo/u9MXu57JrEvu/nLrA==",
       "dependencies": [
         "@smithy/node-config-provider",
-        "@smithy/protocol-http@5.3.12",
+        "@smithy/protocol-http",
         "@smithy/service-error-classification",
         "@smithy/smithy-client",
         "@smithy/types@4.18.0",
@@ -839,7 +867,7 @@
       "integrity": "sha512-ExYhcltZSli0pgAKOpQQe1DLFBLryeZ22605y/YS+mQpdNWekum9Ujb/jMKfJKgjtz1AZldtwA/wCYuKJgjjlg==",
       "dependencies": [
         "@smithy/core",
-        "@smithy/protocol-http@5.3.12",
+        "@smithy/protocol-http",
         "@smithy/types@4.18.0",
         "tslib@2.8.1"
       ],
@@ -880,21 +908,13 @@
       ],
       "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/@smithy/property-provider/-/property-provider-4.2.12.tgz"
     },
-    "@smithy/protocol-http@4.1.8": {
-      "integrity": "sha512-hmgIAVyxw1LySOwkgMIUN0kjN8TG9Nc85LJeEmEE/cNEe2rkHDUWhnJf2gxcSRFLWsyqWsrZGw40ROjUogg+Iw==",
+    "@smithy/protocol-http@5.6.2": {
+      "integrity": "sha512-Asd04MaxODN6FNY8EPTeCAM4kPNi3jDUAjZU0Y4F9rHvpLUrrUo7KLcxFgSthywFr6dZfIyDLIJda6jxmVTk5w==",
       "dependencies": [
-        "@smithy/types@3.7.2",
+        "@smithy/core",
         "tslib@2.8.1"
       ],
-      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/@smithy/protocol-http/-/protocol-http-4.1.8.tgz"
-    },
-    "@smithy/protocol-http@5.3.12": {
-      "integrity": "sha512-fit0GZK9I1xoRlR4jXmbLhoN0OdEpa96ul8M65XdmXnxXkuMxM0Y8HDT0Fh0Xb4I85MBvBClOzgSrV1X2s1Hxw==",
-      "dependencies": [
-        "@smithy/types@4.18.0",
-        "tslib@2.8.1"
-      ],
-      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/@smithy/protocol-http/-/protocol-http-5.3.12.tgz"
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/@smithy/protocol-http/-/protocol-http-5.6.2.tgz"
     },
     "@smithy/querystring-parser@4.2.12": {
       "integrity": "sha512-P2OdvrgiAKpkPNKlKUtWbNZKB1XjPxM086NeVhK+W+wI46pIKdWBe5QyXvhUm3MEcyS/rkLvY8rZzyUdmyDZBw==",
@@ -956,7 +976,7 @@
         "@smithy/core",
         "@smithy/middleware-endpoint",
         "@smithy/middleware-stack",
-        "@smithy/protocol-http@5.3.12",
+        "@smithy/protocol-http",
         "@smithy/types@4.18.0",
         "@smithy/util-stream",
         "tslib@2.8.1"
@@ -969,13 +989,6 @@
         "tslib@2.8.1"
       ],
       "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/@smithy/types/-/types-1.2.0.tgz"
-    },
-    "@smithy/types@3.7.2": {
-      "integrity": "sha512-bNwBYYmN8Eh9RyjS1p2gW6MIhSO2rl7X9QeLM8iTdcGRP+eDiIWDt66c9IysCc22gefKszZv+ubV9qZc7hdESg==",
-      "dependencies": [
-        "tslib@2.8.1"
-      ],
-      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/@smithy/types/-/types-3.7.2.tgz"
     },
     "@smithy/types@4.18.0": {
       "integrity": "sha512-CgB6HHWer/vrKps24ulRIbpcpb7K4xAU7SkZ7YHzBPlwHsvsrCJFEXK421s+cJzX+ZrqtA/TuU5w1HzI7k9N8A==",
@@ -1178,6 +1191,10 @@
       ],
       "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/@smithy/uuid/-/uuid-1.1.2.tgz"
     },
+    "@standard-schema/spec@1.1.0": {
+      "integrity": "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==",
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/@standard-schema/spec/-/spec-1.1.0.tgz"
+    },
     "abort-controller@3.0.0": {
       "integrity": "sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==",
       "dependencies": [
@@ -1273,6 +1290,10 @@
       "integrity": "sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==",
       "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/event-target-shim/-/event-target-shim-5.0.1.tgz"
     },
+    "eventemitter3@4.0.7": {
+      "integrity": "sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==",
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/eventemitter3/-/eventemitter3-4.0.7.tgz"
+    },
     "eventemitter3@5.0.4": {
       "integrity": "sha512-mlsTRyGaPBjPedk6Bvw+aqbsXDtoAyAzm5MO7JgU+yVRyMQ5O8bD4Kcci7BS85f93veegeCPkL8R4GLClnjLFw==",
       "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/eventemitter3/-/eventemitter3-5.0.4.tgz"
@@ -1285,7 +1306,7 @@
       "integrity": "sha512-ft0R47ugLkyQys7v3qbi0kUkeSe8VY2HUj4YqwKuxC2OYxQJtFMuSNGCyXpAND4vA34PJLJOMo0vTCEqwinVTg==",
       "dependencies": [
         "buffer",
-        "eventemitter3",
+        "eventemitter3@5.0.4",
         "readable-stream",
         "uuid",
         "ws"
@@ -1299,6 +1320,51 @@
     "internmap@2.0.3": {
       "integrity": "sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==",
       "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/internmap/-/internmap-2.0.3.tgz"
+    },
+    "js-tiktoken@1.0.21": {
+      "integrity": "sha512-biOj/6M5qdgx5TKjDnFT1ymSpM5tbd3ylwDtrQvFQSu0Z7bBYko2dF+W/aUkXUPuk6IVpRxk/3Q2sHOzGlS36g==",
+      "dependencies": [
+        "base64-js"
+      ],
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/js-tiktoken/-/js-tiktoken-1.0.21.tgz"
+    },
+    "langsmith@0.10.2": {
+      "integrity": "sha512-9iqIcEPBMlRT+vvijcjCo4AeHlJHUZjxwbPtDdvQPpGgvo7nYxhsQ7jVd53zXkPstiPfjRhexfnIe0vLltVFmg==",
+      "dependencies": [
+        "p-queue"
+      ],
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/langsmith/-/langsmith-0.10.2.tgz"
+    },
+    "mustache@4.2.0": {
+      "integrity": "sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==",
+      "bin": true,
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/mustache/-/mustache-4.2.0.tgz"
+    },
+    "ollama@0.6.3": {
+      "integrity": "sha512-KEWEhIqE5wtfzEIZbDCLH51VFZ6Z3ZSa6sIOg/E/tBV8S51flyqBOXi+bRxlOYKDf8i327zG9eSTb8IJxvm3Zg==",
+      "dependencies": [
+        "whatwg-fetch"
+      ],
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/ollama/-/ollama-0.6.3.tgz"
+    },
+    "p-finally@1.0.0": {
+      "integrity": "sha512-LICb2p9CB7FS+0eR1oqWnHhp0FljGLZCWBE9aix0Uye9W8LTQPwMTYVGWQWIw9RdQiDg4+epXQODwIYJtSJaow==",
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/p-finally/-/p-finally-1.0.0.tgz"
+    },
+    "p-queue@6.6.2": {
+      "integrity": "sha512-RwFpb72c/BhQLEXIZ5K2e+AhgNVmIejGlTgiB9MzZ0e93GRvqZ7uSi0dvRF7/XIXDeNkra2fNHBxTyPDGySpjQ==",
+      "dependencies": [
+        "eventemitter3@4.0.7",
+        "p-timeout"
+      ],
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/p-queue/-/p-queue-6.6.2.tgz"
+    },
+    "p-timeout@3.2.0": {
+      "integrity": "sha512-rhIwUycgwwKcP9yTOOFK/AKsAopjjCakVqLHePO3CC6Mir1Z99xT+R63jZxAT5lFZLa2inS5h+ZS2GvR99/FBg==",
+      "dependencies": [
+        "p-finally"
+      ],
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/p-timeout/-/p-timeout-3.2.0.tgz"
     },
     "process@0.11.10": {
       "integrity": "sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==",
@@ -1340,25 +1406,36 @@
       "bin": true,
       "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/uuid/-/uuid-9.0.1.tgz"
     },
+    "whatwg-fetch@3.6.20": {
+      "integrity": "sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg==",
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/whatwg-fetch/-/whatwg-fetch-3.6.20.tgz"
+    },
     "ws@8.21.3": {
       "integrity": "sha512-201TZ/kPWxoPr/OKWjquZR1SWKXcvxdH+e1xrx89b3YbmzLMFCLfnaG1HFIgWzJOEWZ7MvpK++odZufgYR50Rw==",
       "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/ws/-/ws-8.21.3.tgz"
+    },
+    "zod@4.5.4": {
+      "integrity": "sha512-sC95tT5iHHH9gtpj6A81kh+NEaRAUFN+qlUPDUbRfOMvNf5QCBqsb3WgvnpVtK5Y+4UfA6KqufotuTvMGiTlsA==",
+      "tarball": "https://elilillyco.jfrog.io/elilillyco/api/npm/Lilly-NPM/zod/-/zod-4.5.4.tgz"
     }
   },
   "workspace": {
     "dependencies": [
-      "jsr:@std/assert@1",
+      "jsr:@std/assert@^1.0.19",
       "npm:@aws-crypto/sha256-js@^5.2.0",
       "npm:@aws-sdk/credential-providers@^3.1127.0",
       "npm:@aws-sdk/shared-ini-file-loader@^3.374.0",
       "npm:@aws-sdk/signature-v4@^3.374.0",
       "npm:@faker-js/faker@^10.6.0",
+      "npm:@langchain/core@1",
+      "npm:@langchain/ollama@1",
       "npm:@neo4j/cypher-builder@^3.3.0",
-      "npm:@smithy/protocol-http@^4.1.8",
+      "npm:@smithy/protocol-http@^5.6.2",
       "npm:d3-force@3",
       "npm:d3-scale@^4.0.2",
       "npm:d3-timer@^3.0.1",
-      "npm:gremlin@^3.8.1"
+      "npm:gremlin@^3.8.1",
+      "npm:zod@4"
     ]
   }
 }

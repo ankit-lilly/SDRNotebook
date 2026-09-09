@@ -1,6 +1,11 @@
-import { renderGraph } from "./graph-renderer.ts";
+import { renderGraph } from "./graph.ts";
 import { DISPLAY_SYMBOL } from "./types.ts";
-import type { GraphData, GraphPath, GraphRendererOptions, RichDisplay } from "./types.ts";
+import type {
+  GraphData,
+  GraphPath,
+  GraphRendererOptions,
+  RichDisplay,
+} from "./types.ts";
 
 // ── Internal display primitives ──
 
@@ -45,7 +50,9 @@ function renderCell(value: unknown): string {
   return escapeHtml(stringifyPlain(value));
 }
 
-function mimeBundle(bundle: Record<string, string | Record<string, unknown>>): RichDisplay {
+function mimeBundle(
+  bundle: Record<string, string | Record<string, unknown>>,
+): RichDisplay {
   return {
     [DISPLAY_SYMBOL]() {
       return bundle;
@@ -69,8 +76,8 @@ function displayJson(value: unknown): RichDisplay {
   const pretty = escapeHtml(stringifyPlain(value));
   return mimeBundle({
     "text/html": [
-      "<div style=\"margin:8px 0;padding:10px 12px;border:1px solid #e7ebf0;border-radius:8px;background:#fcfcfd\">",
-      "<div style=\"margin-bottom:6px;font:600 11px/1.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:#6b7280\">JSON</div>",
+      '<div style="margin:8px 0;padding:10px 12px;border:1px solid #e7ebf0;border-radius:8px;background:#fcfcfd">',
+      '<div style="margin-bottom:6px;font:600 11px/1.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:#6b7280">JSON</div>',
       `<pre style="margin:0;white-space:pre-wrap;word-break:break-word;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:#111827">${pretty}</pre>`,
       "</div>",
     ].join(""),
@@ -116,20 +123,28 @@ function displayTable(rows: Array<Record<string, unknown>>): RichDisplay {
 
   const columns = [...new Set(rows.flatMap((row) => Object.keys(row)))];
   const head = columns.map((column) =>
-    `<th style="position:sticky;top:0;background:#fafbfc;padding:8px 10px;text-align:left;font:600 11px/1.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:#6b7280;border-bottom:1px solid #e7ebf0;white-space:nowrap">${escapeHtml(column)}</th>`
+    `<th style="position:sticky;top:0;background:#fafbfc;padding:8px 10px;text-align:left;font:600 11px/1.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:#6b7280;border-bottom:1px solid #e7ebf0;white-space:nowrap">${
+      escapeHtml(column)
+    }</th>`
   ).join("");
   const body = rows.map((row, index) => {
     const cells = columns.map((column) =>
-      `<td style="padding:8px 10px;vertical-align:top;text-align:left;font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:#111827;border-bottom:1px solid #eef1f4">${renderCell(row[column])}</td>`
+      `<td style="padding:8px 10px;vertical-align:top;text-align:left;font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:#111827;border-bottom:1px solid #eef1f4">${
+        renderCell(row[column])
+      }</td>`
     ).join("");
-    return `<tr style="background:${index % 2 === 0 ? "#ffffff" : "#fbfcfd"}">${cells}</tr>`;
+    return `<tr style="background:${
+      index % 2 === 0 ? "#ffffff" : "#fbfcfd"
+    }">${cells}</tr>`;
   }).join("");
 
   const tableHtml = [
-    "<div style=\"margin:8px auto 8px 0;max-width:100%;width:fit-content;min-width:min(720px,100%);border:1px solid #e7ebf0;border-radius:8px;background:#ffffff;overflow:hidden\">",
-    `<div style="padding:8px 10px;border-bottom:1px solid #eef1f4;font:600 11px/1.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:#6b7280;background:#fafbfc">${rows.length} row${rows.length === 1 ? "" : "s"}</div>`,
-    "<div style=\"overflow-x:auto\">",
-    "<table style=\"border-collapse:separate;border-spacing:0;width:max-content;min-width:100%\">",
+    '<div style="margin:8px auto 8px 0;max-width:100%;width:fit-content;min-width:min(720px,100%);border:1px solid #e7ebf0;border-radius:8px;background:#ffffff;overflow:hidden">',
+    `<div style="padding:8px 10px;border-bottom:1px solid #eef1f4;font:600 11px/1.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:#6b7280;background:#fafbfc">${rows.length} row${
+      rows.length === 1 ? "" : "s"
+    }</div>`,
+    '<div style="overflow-x:auto">',
+    '<table style="border-collapse:separate;border-spacing:0;width:max-content;min-width:100%">',
     `<thead><tr>${head}</tr></thead>`,
     `<tbody>${body}</tbody>`,
     "</table>",
@@ -137,7 +152,11 @@ function displayTable(rows: Array<Record<string, unknown>>): RichDisplay {
     "</div>",
   ].join("");
 
-  const plainText = rows.map((row) => columns.map((column) => `${column}: ${stringifyPlain(row[column])}`).join(" | ")).join("\n");
+  const plainText = rows.map((row) =>
+    columns.map((column) => `${column}: ${stringifyPlain(row[column])}`).join(
+      " | ",
+    )
+  ).join("\n");
 
   return displayHtml(tableHtml, plainText);
 }
@@ -154,12 +173,23 @@ function defaultDisplay(value: unknown): RichDisplay {
   });
 }
 
-function notebookMarkdown(strings: TemplateStringsArray, ...values: unknown[]): RichDisplay {
-  const source = String.raw({ raw: strings }, ...values.map((value) => typeof value === "string" ? value : stringifyPlain(value)));
+function notebookMarkdown(
+  strings: TemplateStringsArray,
+  ...values: unknown[]
+): RichDisplay {
+  const source = String.raw(
+    { raw: strings },
+    ...values.map((value) =>
+      typeof value === "string" ? value : stringifyPlain(value)
+    ),
+  );
   return displayMarkdown(source);
 }
 
-function notebookHtml(strings: TemplateStringsArray, ...values: unknown[]): RichDisplay {
+function notebookHtml(
+  strings: TemplateStringsArray,
+  ...values: unknown[]
+): RichDisplay {
   const htmlContent = strings.reduce((acc, part, index) => {
     const value = index < values.length ? renderCell(values[index]) : "";
     return `${acc}${part}${value}`;
@@ -178,12 +208,18 @@ function isGraphData(value: unknown): value is GraphData {
 
 function isGraphPaths(value: unknown): value is GraphPath[] {
   return Array.isArray(value) &&
-    value.every((item) => typeof item === "object" && item !== null && "objects" in item);
+    value.every((item) =>
+      typeof item === "object" && item !== null && "objects" in item
+    );
 }
 
-function assertGraphRenderable(value: unknown): asserts value is GraphData | GraphPath[] {
+function assertGraphRenderable(
+  value: unknown,
+): asserts value is GraphData | GraphPath[] {
   if (!isGraphData(value) && !isGraphPaths(value)) {
-    throw new Error("ui.graph() requires path results or { vertices, edges } data.");
+    throw new Error(
+      "ui.graph() requires path results or { vertices, edges } data.",
+    );
   }
 }
 
@@ -191,8 +227,8 @@ function assertGraphRenderable(value: unknown): asserts value is GraphData | Gra
 
 function loaderMarkup(label: string): string {
   return [
-    "<div style=\"display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid #e5e7eb;border-radius:8px;background:#fcfcfd;font:500 12px/1.4 ui-sans-serif,system-ui,sans-serif;color:#374151\">",
-    "<span style=\"width:12px;height:12px;border:2px solid #d1d5db;border-top-color:#4b5563;border-radius:9999px;display:inline-block;animation:nq-spin 0.8s linear infinite\"></span>",
+    '<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid #e5e7eb;border-radius:8px;background:#fcfcfd;font:500 12px/1.4 ui-sans-serif,system-ui,sans-serif;color:#374151">',
+    '<span style="width:12px;height:12px;border:2px solid #d1d5db;border-top-color:#4b5563;border-radius:9999px;display:inline-block;animation:nq-spin 0.8s linear infinite"></span>',
     `<span>${label}</span>`,
     "</div>",
     "<style>@keyframes nq-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }</style>",
@@ -212,7 +248,10 @@ async function updateNotebookDisplay(
   displayId: string,
   html: string,
 ): Promise<void> {
-  if (typeof Deno === "undefined" || !("jupyter" in Deno) || !Deno.jupyter?.broadcast) {
+  if (
+    typeof Deno === "undefined" || !("jupyter" in Deno) ||
+    !Deno.jupyter?.broadcast
+  ) {
     return;
   }
 
@@ -231,7 +270,11 @@ async function updateNotebookDisplay(
 async function withLoader<T>(
   label: string,
   work: () => Promise<T>,
-  options: { successMessage?: string; errorMessage?: string; displayId?: string } = {},
+  options: {
+    successMessage?: string;
+    errorMessage?: string;
+    displayId?: string;
+  } = {},
 ): Promise<T> {
   const displayId = options.displayId ?? `nq-loader-${crypto.randomUUID()}`;
   await updateNotebookDisplay("display_data", displayId, loaderMarkup(label));
@@ -258,7 +301,10 @@ async function withLoader<T>(
 export const ui = {
   table: displayTable,
   json: displayJson,
-  graph(value: GraphData | GraphPath[], options: GraphRendererOptions = {}): RichDisplay {
+  graph(
+    value: GraphData | GraphPath[],
+    options: GraphRendererOptions = {},
+  ): RichDisplay {
     assertGraphRenderable(value);
     return renderGraph(value, options);
   },
